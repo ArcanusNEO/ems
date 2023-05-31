@@ -1,0 +1,15 @@
+[Unit]
+Description=arcnet backend service
+After=network.target postgresql.service rc-local.service
+
+[Service]
+Type=forking
+WorkingDirectory=/var/www/arcnet-backend
+User=nobody
+Group=www-data
+UMask=0002
+ExecStart=/usr/bin/pm2 start bin/www.js --name api --watch --log /var/log/arcnet-backend/api.log --error /var/log/arcnet-backend/api-error.log --output /var/log/arcnet-backend/api-out.log
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
