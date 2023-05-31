@@ -4,7 +4,7 @@ dotenv.config()
 export default {
   user: "postgres",
   host: "localhost",
-  database: "arcnet",
+  database: "ems",
   password: process.env.POSTGRES_PASSWORD,
   port: 5432
 }
