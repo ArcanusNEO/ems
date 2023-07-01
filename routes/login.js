@@ -21,8 +21,8 @@ router.post('/', async (req, res) => {
   const pwd = crypto.decrypt(password)
   if (!pwd) return res.sendStatus(statusCode.parseErr)
 
-  const userQuery = 'SELECT "uid", "gid", "nickname", "password" FROM "user" WHERE "email" = $1 AND "status" = 0 LIMIT 1'
-  const user = (await db.query(userQuery, [username])).rows[0]
+  const queryUser = 'SELECT "uid", "gid", "nickname", "password" FROM "user" WHERE "email" = $1 AND "status" = 0 LIMIT 1'
+  const user = (await db.query(queryUser, [username])).rows[0]
   if (!user) return res.sendStatus(statusCode.resNotFound)
 
   const { uid, gid, nickname } = user

@@ -14,14 +14,14 @@ router.patch('/password', async (req, res) => {
   const pwd = crypto.decrypt(password)
   if (!pwd) return res.sendStatus(statusCode.parseErr)
 
-  const userQuery = 'SELECT "uid", "gid", "nickname" FROM "user" WHERE "email" = $1 AND "status" = 0 LIMIT 1'
-  const user = (await db.query(userQuery, [username])).rows[0]
+  const queryUser = 'SELECT "uid", "gid", "nickname" FROM "user" WHERE "email" = $1 AND "status" = 0 LIMIT 1'
+  const user = (await db.query(queryUser, [username])).rows[0]
   if (!user) return res.sendStatus(statusCode.resNotFound)
   const { uid, gid, nickname } = user
 
   const hpwd = hash.hashf(pwd + uid)
-  const pwdQuery = 'UPDATE "user" SET "password" = $1 WHERE "uid" = $2'
-  await db.query(pwdQuery, [hpwd, uid])
+  const queryPassword = 'UPDATE "user" SET "password" = $1 WHERE "uid" = $2'
+  await db.query(queryPassword, [hpwd, uid])
 
   return res.status(statusCode.ok).json(await helper.accountCookie(req, res, { uid, gid, username, nickname }))
 })

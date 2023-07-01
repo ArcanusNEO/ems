@@ -12,13 +12,13 @@ router.patch('/password', async (req, res) => {
     const pwd = crypto.decrypt(password)
     if (!pwd) return res.sendStatus(statusCode.parseErr)
 
-    const userQuery = 'SELECT "uid" FROM "user" WHERE "uid" = $1 LIMIT 1'
-    const user = (await db.query(userQuery, [uid])).rows[0]
+    const queryUser = 'SELECT "uid" FROM "user" WHERE "uid" = $1 LIMIT 1'
+    const user = (await db.query(queryUser, [uid])).rows[0]
     if (!user) return res.sendStatus(statusCode.resNotFound)
 
     const hpwd = hash.hashf(pwd + uid)
-    const pwdQuery = 'UPDATE "user" SET "password" = $1 WHERE "uid" = $2'
-    await db.query(pwdQuery, [hpwd, uid])
+    const queryPassword = 'UPDATE "user" SET "password" = $1 WHERE "uid" = $2'
+    await db.query(queryPassword, [hpwd, uid])
 
     return res.status(statusCode.ok).json({ password: hpwd })
   } catch { }
@@ -30,8 +30,8 @@ router.patch('/nickname', async (req, res) => {
     const { uid } = req.params
     const { nickname } = req.body
 
-    const userQuery = 'SELECT "uid" FROM "user" WHERE "uid" = $1 LIMIT 1'
-    const user = (await db.query(userQuery, [uid])).rows[0]
+    const queryUser = 'SELECT "uid" FROM "user" WHERE "uid" = $1 LIMIT 1'
+    const user = (await db.query(queryUser, [uid])).rows[0]
     if (!user) return res.sendStatus(statusCode.resNotFound)
 
     const query = 'UPDATE "user" SET "nickname" = $1 WHERE "uid" = $2'
