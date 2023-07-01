@@ -22,16 +22,16 @@ router.put('/:pid(\\d+)', async (req, res) => {
 
   const uid = req.jwtAccount?.uid
 
-  const description = req.body.description
+  const answer = req.body.answer
 
   const queryLegal = 'SELECT * FROM "exam" INNER JOIN "examUser" ON "exam"."eid" = "examUser"."eid" INNER JOIN "problem" ON "exam"."eid" = "problem"."eid" WHERE "problem"."pid" = $1 AND "examUser"."uid" = $2 AND NOW()::TIMESTAMPTZ <@ "exam"."during"'
 
   const retLegal = (await db.query(queryLegal, [pid, uid])).rows[0]
   if (!retLegal) return res.sendStatus(statusCode.forbidden)
 
-  const query = 'INSERT INTO "solution" ("pid", "uid", "editTime", "description") VALUES ($1, $2, NOW()::TIMESTAMPTZ, $3) ON CONFLICT ("pid", "uid") DO UPDATE SET "description" = $3 RETURNING "sid"'
+  const query = 'INSERT INTO "solution" ("pid", "uid", "editTime", "answer") VALUES ($1, $2, NOW()::TIMESTAMPTZ, $3) ON CONFLICT ("pid", "uid") DO UPDATE SET "answer" = $3 RETURNING "sid"'
 
-  const ret = (await db.query(query, [pid, uid, description])).rows[0]
+  const ret = (await db.query(query, [pid, uid, answer])).rows[0]
   return res.status(statusCode.ok).json(ret)
 })
 

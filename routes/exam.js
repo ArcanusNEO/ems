@@ -29,4 +29,7 @@ router.get('/:eid(\\d+)/content', async (req, res) => {
   return res.status(statusCode.ok).json(ret)
 })
 
+// TODO
+// register
+
 export default router
