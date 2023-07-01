@@ -14,12 +14,16 @@ router.get('/', (req, res) => {
   return res.end('Powered by Lucas.')
 })
 
-router.get('/mem', loginChk, (req, res) => {
+router.get('/mem', (req, res) => {
   return res.json(process.memoryUsage())
 })
 
-router.get('/ip', loginChk, (req, res) => {
+router.get('/ip', (req, res) => {
   return res.end(req.ip)
+})
+
+router.get('/error', (req, res) => {
+  throw Error("error!")
 })
 
 export default router
