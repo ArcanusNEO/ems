@@ -29,7 +29,15 @@ router.get('/:eid(\\d+)/content', async (req, res) => {
   return res.status(statusCode.ok).json(ret)
 })
 
-// TODO
-// register
+router.get('/register/:eid(\\d+)', async (req, res) => {
+  const eid = req.params.eid
+
+  const uid = req.jwtAccount?.uid
+
+  const query = 'INSERT INTO "examUser" ("eid", "uid") VALUES ($1, $2)'
+  await db.query(query, [eid, uid])
+  
+  return res.sendStatus(statusCode.ok)
+})
 
 export default router
