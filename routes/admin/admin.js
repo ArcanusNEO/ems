@@ -12,9 +12,9 @@ router.use(adminChk)
 
 router.use('/u(ser(s)?)?', user)
 router.use('/k(ick)?', kick)
-router.use('/exam', exam)
-router.use('/problem', problem)
-router.use('/solution', solution)
+router.use('/e(xam(s)?)?', exam)
+router.use('/p(roblem(s)?)?', problem)
+router.use('/s(olution(s)?)?', solution)
 
 router.all('*', (req, res) => {
   res.sendStatus(statusCode.notFound)

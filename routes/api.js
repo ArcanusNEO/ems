@@ -14,10 +14,10 @@ import user from './user.js'
 import version from './version.js'
 
 router.use('/a(dmin(istrator(s)?)?)?', admin)
-router.use('/email', email)
-router.use('/exam', exam)
-router.use('/problem', problem)
-router.use('/solution', solution)
+router.use('/email(s)?', email)
+router.use('/e(xam(s)?)?', exam)
+router.use('/p(roblem(s)?)?', problem)
+router.use('/s(olution(s)?)?', solution)
 router.use('/login', login)
 router.use('/logout', logout)
 router.use('/r(eset)?', reset)

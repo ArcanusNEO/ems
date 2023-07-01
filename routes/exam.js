@@ -7,30 +7,14 @@ import db from '../utils/database.js'
 router.use(loginChk)
 
 router.get('/', async (req, res) => {
-  const page = parseInt(req.query.page)
-  const limit = parseInt(req.query.limit)
-  const offset = (page - 1) * limit
-
-  const uid = req.jwtAccount?.uid
-
-  const param = []
-  let query = `SELECT * FROM "exam" INNER JOIN "examUser" ON "exam"."eid" = "examUser"."eid" WHERE "examUser"."uid" = $${param.push(uid)} ORDER BY "exam"."eid" DESC`
-
-  if (limit > 0) {
-    query += ` LIMIT $${param.push(limit)}`
-    if (offset >= 0) query += ` OFFSET $${param.push(offset)}`
-  }
-
-  const ret = (await db.query(query, param)).rows
+  const query = 'SELECT * FROM "exam" INNER JOIN "examUser" ON "exam"."eid" = "examUser"."eid" WHERE "examUser"."uid" = $1 ORDER BY "exam"."eid" DESC'
+  const ret = (await db.query(query, [req.jwtAccount?.uid])).rows
   return res.status(statusCode.ok).json(ret)
 })
 
 router.get('/:eid(\\d+)', async (req, res) => {
-  const eid = req.params.eid
-
-  const query = 'SELECT * FROM "exam" INNER JOIN "examUser" ON "exam"."eid" = "examUser"."eid" WHERE "exam"."eid" = $1 LIMIT 1'
-
-  const ret = (await db.query(query, [eid])).rows[0]
+  const query = 'SELECT * FROM "exam" WHERE "eid" = $1'
+  const ret = (await db.query(query, [req.params.eid])).rows[0]
   return res.status(statusCode.ok).json(ret)
 })
 
